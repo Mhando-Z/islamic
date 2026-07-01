@@ -24,8 +24,6 @@ export default function StudyPage() {
     });
   }, [query, lang]);
 
-  console.log("Filtered:", filtered);
-
   if (!hydrated) return null;
 
   return (
