@@ -26,7 +26,7 @@ const jbMono = JetBrains_Mono({
 });
 
 export const metadata = {
-  title: "Husna — Majina 99 ya Mwenyezi Mungu",
+  title: "Islamic — Majina 99 ya Mwenyezi Mungu",
   description:
     "Recite, track, and study the 99 Names of Allah — bilingual English/Swahili.",
 };
