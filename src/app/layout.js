@@ -44,7 +44,7 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${amiri.variable} ${workSans.variable} ${jbMono.variable}`}
     >
-      <body className="font-body bg-[#0f2e30] text-parchment min-h-screen">
+      <body className="font-body text-parchment min-h-screen">
         <DataProvider>
           <AppProvider>
             <div className="mx-auto max-w-md min-h-screen flex flex-col relative">
