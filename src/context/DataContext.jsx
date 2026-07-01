@@ -8,12 +8,15 @@ export function DataProvider({ children }) {
   const [Alnames, setAlnames] = useState([]);
   const [language, setLanguage] = useState("sw");
 
+  console.log("Alnames:", Alnames);
+
   const fetchAlnames = async () => {
     try {
       const response = await fetch(
-        `https://islamicapi.com/api/v1/asma-ul-husna/?language=${language}&api_key=${process.env.NEXT_ISLAMIC_API_KEY}`,
+        `https://islamicapi.com/api/v1/asma-ul-husna/?language=${language}&api_key=JfrgLjnzoy6tNgMzMzvMbAQ6xrXcXHfqKKwHu7KJebjEANDJ`,
       );
-      const data = await response.json();
+      const { data } = await response.json();
+      //   const { names } = data.data;
       setAlnames(data);
     } catch (error) {
       console.error("Error fetching Alnames:", error);
