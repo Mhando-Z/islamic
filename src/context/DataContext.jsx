@@ -8,8 +8,6 @@ export function DataProvider({ children }) {
   const [Alnames, setAlnames] = useState([]);
   const [language, setLanguage] = useState("sw");
 
-  console.log("Alnames:", Alnames);
-
   const fetchAlnames = async () => {
     try {
       const response = await fetch(

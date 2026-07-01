@@ -13,7 +13,7 @@ export default function StudyNameRow({ entry, lang, t }) {
     e.stopPropagation();
     if (!audioRef.current)
       audioRef.current = new Audio(
-        `https://www.islamicity.org/mediaassets/MP3/other/covers/99-names-of-Allah/00${entry.number}.mp3?v06092021`,
+        `https://www.islamicity.org/mediaassets/MP3/other/covers/99-names-of-Allah/${entry?.number >= 10 ? "0" : "00"}${entry.number}.mp3?v06092021`,
       );
     audioRef.current.currentTime = 0;
     setAudioState("playing");
