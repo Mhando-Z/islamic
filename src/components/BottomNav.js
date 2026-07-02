@@ -11,7 +11,15 @@ const TABS = [
     key: "today",
     icon: (active) => (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="1.6" fill={active ? "currentColor" : "none"} fillOpacity={active ? 0.15 : 0} />
+        <circle
+          cx="12"
+          cy="12"
+          r="8"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          fill={active ? "currentColor" : "none"}
+          fillOpacity={active ? 0.15 : 0}
+        />
         <circle cx="12" cy="12" r="2.4" fill="currentColor" />
       </svg>
     ),
@@ -21,8 +29,23 @@ const TABS = [
     key: "assign",
     icon: (active) => (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-        <rect x="4" y="4.5" width="16" height="15" rx="2.4" stroke="currentColor" strokeWidth="1.6" fill={active ? "currentColor" : "none"} fillOpacity={active ? 0.12 : 0} />
-        <path d="M8 3.5v3M16 3.5v3M7 10h10M7 13.5h6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        <rect
+          x="4"
+          y="4.5"
+          width="16"
+          height="15"
+          rx="2.4"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          fill={active ? "currentColor" : "none"}
+          fillOpacity={active ? 0.12 : 0}
+        />
+        <path
+          d="M8 3.5v3M16 3.5v3M7 10h10M7 13.5h6"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+        />
       </svg>
     ),
   },
@@ -50,7 +73,7 @@ export default function BottomNav() {
   const { t } = useApp();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 flex justify-center pointer-events-none">
+    <nav className="fixed bottom-[-13] left-0 right-0 z-40 flex justify-center pointer-events-none">
       <div className="pointer-events-auto mx-auto max-w-md w-full px-4 pb-[max(0.9rem,env(safe-area-inset-bottom))] pt-2">
         <div className="flex items-stretch justify-between rounded-2xl border border-gold/20 bg-ink-light/90 backdrop-blur-md shadow-card px-2 py-1.5">
           {TABS.map((tab) => {
@@ -70,7 +93,9 @@ export default function BottomNav() {
                   />
                 )}
                 <span className="relative">{tab.icon(active)}</span>
-                <span className="relative text-[11px] font-medium">{t.nav[tab.key]}</span>
+                <span className="relative text-[11px] font-medium">
+                  {t.nav[tab.key]}
+                </span>
               </Link>
             );
           })}
