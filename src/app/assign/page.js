@@ -93,7 +93,7 @@ export default function AssignPage() {
                   </span>
                   <button
                     onClick={() => unassignName(selectedDay, entry.number)}
-                    className="text-[11px] text-ink500/40 underline underline-offset-2"
+                    className="text-[11px] cursor-pointer text-ink500 underline underline-offset-2"
                   >
                     {t.assign.removeButton}
                   </button>
