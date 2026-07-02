@@ -14,7 +14,10 @@ export default function TodayNameItem({ entry, target, lang, t }) {
   const tr = entry.translations[lang];
 
   return (
-    <motion.div layout className="rounded-xl2 bg-parchment text-ink500 shadow-card overflow-hidden">
+    <motion.div
+      layout
+      className="rounded-xl2 bg-parchment text-ink500 shadow-card overflow-hidden"
+    >
       <button
         onClick={() => setOpen((o) => !o)}
         className="w-full flex items-center gap-3 px-4 py-3.5 text-left"
@@ -28,8 +31,12 @@ export default function TodayNameItem({ entry, target, lang, t }) {
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-baseline gap-2">
-            <span className="font-display text-lg">{entry.transliteration}</span>
-            <span className="font-display arabic-text text-ink500/70">{entry.arabic}</span>
+            <span className="font-display text-lg">
+              {entry.transliteration}
+            </span>
+            <span className="font-display arabic-text text-ink500/70">
+              {entry.arabic}
+            </span>
           </div>
           <p className="text-xs text-terracotta font-semibold">{tr.name}</p>
           <div className="mt-1.5 h-1.5 rounded-full bg-ink500/10 overflow-hidden">
@@ -78,7 +85,7 @@ export default function TodayNameItem({ entry, target, lang, t }) {
                   onClick={() => {
                     if (confirm(t.today.resetConfirm)) resetCount(entry.number);
                   }}
-                  className="mt-3 text-[11px] text-ink500/40 underline underline-offset-2"
+                  className="mt-3 text-[11px] text-ink500   rounded-3xl border border-ink500/20 px-3 py-1.5 hover:bg-ink500/5 transition"
                 >
                   {t.today.reset}
                 </button>
