@@ -1,17 +1,19 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useContext } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useApp, todayDayCode } from "@/context/AppContext";
 import { namesData } from "@/data/names";
 import TodayNameItem from "@/components/TodayNameItem";
 import PageHeader from "@/components/PageHeader";
+import DataContext from "@/context/DataContext";
 
 export default function TodayPage() {
   const { t, lang, assignments, getCount, hydrated } = useApp();
   const dayCode = todayDayCode();
   const dayName = t.days[dayCode];
+  const { Alnames } = useContext(DataContext);
 
   const todaysAssignments = assignments[dayCode] || [];
 
@@ -63,10 +65,11 @@ export default function TodayPage() {
           </motion.div>
         )}
 
-        {entries.map(({ a, entry }) => (
+        {entries.map(({ a, entry }, index) => (
           <TodayNameItem
             key={entry.number}
             entry={entry}
+            description={Alnames[index]?.meaning}
             target={a.target}
             lang={lang}
             t={t}

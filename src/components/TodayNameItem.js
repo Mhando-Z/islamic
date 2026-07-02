@@ -14,7 +14,7 @@ const formatTime = (s) => {
   return `${m}:${sec}`;
 };
 
-export default function TodayNameItem({ entry, target, lang, t }) {
+export default function TodayNameItem({ entry, target, lang, t, description }) {
   const [open, setOpen] = useState(false);
   const { getCount, increment, resetCount } = useApp();
   const count = getCount(entry.number);
@@ -113,7 +113,7 @@ export default function TodayNameItem({ entry, target, lang, t }) {
           >
             <div className="px-4 pb-5 pt-1 flex flex-col items-center border-t border-ink500/10">
               <p className="text-sm text-ink500/80 max-w-90 text-center mt-3 mb-1">
-                {tr.meaning}
+                {description || tr.meaning}
               </p>
               <button
                 onClick={playAudio}
