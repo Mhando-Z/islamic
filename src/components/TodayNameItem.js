@@ -112,7 +112,9 @@ export default function TodayNameItem({ entry, target, lang, t }) {
             transition={{ duration: 0.25 }}
           >
             <div className="px-4 pb-5 pt-1 flex flex-col items-center border-t border-ink500/10">
-              <p className="text-xs text-ink500/60 mt-3 mb-1">{tr.meaning}</p>
+              <p className="text-sm text-ink500/80 max-w-90 text-center mt-3 mb-1">
+                {tr.meaning}
+              </p>
               <button
                 onClick={playAudio}
                 className="mt-3 mb-3 inline-flex  items-center gap-2 text-sm text-ink bg-gold-soft/50 px-3 py-1.5 rounded-full"
