@@ -1,9 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import CounterBead from "./CounterBead";
 import { useApp } from "@/context/AppContext";
+
+const formatTime = (s) => {
+  if (!s || !isFinite(s)) return "0:00";
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60)
+    .toString()
+    .padStart(2, "0");
+  return `${m}:${sec}`;
+};
 
 export default function TodayNameItem({ entry, target, lang, t }) {
   const [open, setOpen] = useState(false);
@@ -12,6 +21,41 @@ export default function TodayNameItem({ entry, target, lang, t }) {
   const pct = target > 0 ? Math.min(count / target, 1) : 0;
   const done = target > 0 && count >= target;
   const tr = entry.translations[lang];
+  const [audioState, setAudioState] = useState("idle"); // idle | playing | unavailable
+  const [progress, setProgress] = useState(0); // 0 -> 1
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const audioRef = useRef(null);
+
+  const playAudio = (e) => {
+    e.stopPropagation();
+    if (!audioRef.current)
+      audioRef.current = new Audio(
+        `https://www.islamicity.org/mediaassets/MP3/other/covers/99-names-of-Allah/${entry?.number >= 10 ? "0" : "00"}${entry.number}.mp3?v06092021`,
+      );
+    audioRef.current.currentTime = 0;
+    setProgress(0);
+    setCurrentTime(0);
+    setAudioState("playing");
+    audioRef.current.play().catch(() => setAudioState("unavailable"));
+
+    audioRef.current.ontimeupdate = () => {
+      setCurrentTime(audioRef.current.currentTime);
+      if (audioRef.current.duration) {
+        setDuration(audioRef.current.duration);
+        setProgress(audioRef.current.currentTime / audioRef.current.duration);
+      }
+    };
+    audioRef.current.onended = () => {
+      setAudioState("idle");
+      setProgress(0);
+      setCurrentTime(0);
+    };
+    audioRef.current.onerror = () => {
+      setAudioState("unavailable");
+      setProgress(0);
+    };
+  };
 
   return (
     <motion.div
@@ -69,6 +113,39 @@ export default function TodayNameItem({ entry, target, lang, t }) {
           >
             <div className="px-4 pb-5 pt-1 flex flex-col items-center border-t border-ink500/10">
               <p className="text-xs text-ink500/60 mt-3 mb-1">{tr.meaning}</p>
+              <button
+                onClick={playAudio}
+                className="mt-3 mb-3 inline-flex  items-center gap-2 text-sm text-ink bg-gold-soft/50 px-3 py-1.5 rounded-full"
+              >
+                {audioState === "playing" ? (
+                  <span className="flex items-end gap-[2px] h-3.5 w-3.5">
+                    {[0, 1, 2].map((i) => (
+                      <motion.span
+                        key={i}
+                        className="w-[3px] bg-ink rounded-full"
+                        animate={{ height: ["30%", "100%", "30%"] }}
+                        transition={{
+                          duration: 0.6,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          delay: i * 0.15,
+                        }}
+                      />
+                    ))}
+                  </span>
+                ) : (
+                  <span>▶</span>
+                )}
+                {t.study.playAudio}
+              </button>
+
+              {audioState === "unavailable" && (
+                <p className="text-[11px] text-ink500/40 mt-2">
+                  {lang === "sw"
+                    ? "Sauti haipatikani bado."
+                    : "Audio not available yet."}
+                </p>
+              )}
               <div className="mt-3">
                 <CounterBead
                   count={count}
