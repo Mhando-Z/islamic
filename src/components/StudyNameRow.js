@@ -2,7 +2,6 @@
 
 import { useRef, useState, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import DataContext from "@/context/DataContext";
 
 const formatTime = (s) => {
   if (!s || !isFinite(s)) return "0:00";
@@ -21,7 +20,6 @@ export default function StudyNameRow({ entry, lang, t, description }) {
   const [duration, setDuration] = useState(0);
   const audioRef = useRef(null);
   const tr = entry.translations[lang];
-  const { Alnames } = useContext(DataContext);
 
   const playAudio = (e) => {
     e.stopPropagation();
@@ -98,7 +96,7 @@ export default function StudyNameRow({ entry, lang, t, description }) {
               </p>
               <p className="text-sm leading-relaxed text-ink500/80">
                 {/* {tr.meaning} */}
-                {description}
+                {description || tr.meaning}
               </p>
 
               <button
