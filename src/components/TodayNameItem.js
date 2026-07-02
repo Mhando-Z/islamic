@@ -120,7 +120,7 @@ export default function TodayNameItem({ entry, target, lang, t }) {
                 className="mt-3 mb-3 inline-flex  items-center gap-2 text-sm text-ink bg-gold-soft/50 px-3 py-1.5 rounded-full"
               >
                 {audioState === "playing" ? (
-                  <span className="flex items-end gap-[2px] h-3.5 w-3.5">
+                  <span className="flex items-end gap-0.5 h-3.5 w-3.5">
                     {[0, 1, 2].map((i) => (
                       <motion.span
                         key={i}
