@@ -5,10 +5,12 @@ import { useApp } from "@/context/AppContext";
 import { namesData, TOTAL_NAMES } from "@/data/names";
 import PageHeader from "@/components/PageHeader";
 import StudyNameRow from "@/components/StudyNameRow";
+import DataContext from "@/context/DataContext";
 
 export default function StudyPage() {
   const { t, lang, hydrated } = useApp();
   const [query, setQuery] = useState("");
+  const { Alnames } = useContext(DataContext);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -49,9 +51,10 @@ export default function StudyPage() {
           </p>
         ) : (
           <div className="flex flex-col gap-2.5 pb-2">
-            {filtered.map((entry) => (
+            {filtered.map((entry, index) => (
               <StudyNameRow
                 key={entry.number}
+                description={Alnames[index]?.meaning}
                 entry={entry}
                 lang={lang}
                 t={t}

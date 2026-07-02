@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import DataContext from "@/context/DataContext";
 
 const formatTime = (s) => {
   if (!s || !isFinite(s)) return "0:00";
@@ -12,7 +13,7 @@ const formatTime = (s) => {
   return `${m}:${sec}`;
 };
 
-export default function StudyNameRow({ entry, lang, t }) {
+export default function StudyNameRow({ entry, lang, t, description }) {
   const [open, setOpen] = useState(false);
   const [audioState, setAudioState] = useState("idle"); // idle | playing | unavailable
   const [progress, setProgress] = useState(0); // 0 -> 1
@@ -20,6 +21,7 @@ export default function StudyNameRow({ entry, lang, t }) {
   const [duration, setDuration] = useState(0);
   const audioRef = useRef(null);
   const tr = entry.translations[lang];
+  const { Alnames } = useContext(DataContext);
 
   const playAudio = (e) => {
     e.stopPropagation();
@@ -95,7 +97,8 @@ export default function StudyNameRow({ entry, lang, t }) {
                 {t.study.meaningLabel}
               </p>
               <p className="text-sm leading-relaxed text-ink500/80">
-                {tr.meaning}
+                {/* {tr.meaning} */}
+                {description}
               </p>
 
               <button
@@ -135,7 +138,7 @@ export default function StudyNameRow({ entry, lang, t }) {
                   >
                     <div className="relative h-1.5 flex-1 rounded-full bg-ink500/10 overflow-hidden">
                       <motion.div
-                        className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-terracotta via-gold-soft to-terracotta bg-[length:200%_100%]"
+                        className="absolute inset-y-0 left-0 rounded-full bg-linear-to-r from-terracotta via-gold-soft to-terracotta bg-[length:200%_100%]"
                         style={{ width: `${Math.min(progress * 100, 100)}%` }}
                         animate={{ backgroundPosition: ["0% 0%", "200% 0%"] }}
                         transition={{
