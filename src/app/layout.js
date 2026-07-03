@@ -3,6 +3,7 @@ import { Amiri, Work_Sans, JetBrains_Mono } from "next/font/google";
 import { AppProvider } from "@/context/AppContext";
 import { DataProvider } from "@/context/DataContext";
 import BottomNav from "@/components/BottomNav";
+import RegisterSW from "@/components/RegisterSW";
 
 const amiri = Amiri({
   subsets: ["latin", "arabic"],
@@ -26,7 +27,7 @@ const jbMono = JetBrains_Mono({
 });
 
 export const metadata = {
-  title: "Islamic — Majina 99 ya Mwenyezi Mungu",
+  title: "Islamic, Majina 99 ya Mwenyezi Mungu",
   description:
     "Recite, track, and study the 99 Names of Allah — bilingual English/Swahili.",
 };
@@ -48,6 +49,7 @@ export default function RootLayout({ children }) {
         <DataProvider>
           <AppProvider>
             <div className="mx-auto max-w-md min-h-screen flex flex-col relative">
+              <RegisterSW />
               <main className="flex-1 pb-24">{children}</main>
               <BottomNav />
             </div>
