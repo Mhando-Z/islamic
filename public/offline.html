@@ -1,12 +1,241 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
-    <title>Islamic</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Islamic — Offline</title>
+    <style>
+      :root {
+        --bg: #0f2a26;
+        --bg-soft: #123330;
+        --card: #f3e9d3;
+        --gold: #d9a441;
+        --gold-soft: #e8c98a;
+        --text-muted: #9db3af;
+        --border: #1c3f3a;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+
+      body {
+        background: var(--bg);
+        background-image: radial-gradient(
+          circle at 50% 0%,
+          rgba(217, 164, 65, 0.08),
+          transparent 60%
+        );
+        color: #f3e9d3;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 420px;
+        text-align: center;
+      }
+
+      .ornament {
+        font-size: 13px;
+        letter-spacing: 0.35em;
+        color: var(--gold);
+        text-transform: uppercase;
+        margin-bottom: 14px;
+        opacity: 0.85;
+      }
+
+      .icon-wrap {
+        width: 88px;
+        height: 88px;
+        margin: 0 auto 28px;
+        border-radius: 50%;
+        background: var(--bg-soft);
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
+      .icon-wrap::before {
+        content: "";
+        position: absolute;
+        inset: -6px;
+        border-radius: 50%;
+        border: 1px solid rgba(217, 164, 65, 0.25);
+      }
+
+      svg {
+        width: 36px;
+        height: 36px;
+        stroke: var(--gold);
+      }
+
+      h1 {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 28px;
+        font-weight: 500;
+        color: var(--gold-soft);
+        margin: 0 0 12px;
+        letter-spacing: 0.01em;
+      }
+
+      p {
+        font-size: 15px;
+        line-height: 1.6;
+        color: var(--text-muted);
+        margin: 0 0 32px;
+      }
+
+      .divider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin: 28px 0;
+        color: var(--gold);
+        opacity: 0.5;
+      }
+
+      .divider span {
+        font-size: 14px;
+      }
+
+      .divider::before,
+      .divider::after {
+        content: "";
+        height: 1px;
+        width: 48px;
+        background: var(--border);
+      }
+
+      button {
+        appearance: none;
+        border: 1px solid var(--gold);
+        background: transparent;
+        color: var(--gold-soft);
+        font-size: 15px;
+        font-weight: 500;
+        padding: 13px 32px;
+        border-radius: 999px;
+        cursor: pointer;
+        transition:
+          background 0.2s ease,
+          color 0.2s ease,
+          transform 0.15s ease;
+        letter-spacing: 0.02em;
+      }
+
+      button:hover {
+        background: var(--gold);
+        color: var(--bg);
+      }
+
+      button:active {
+        transform: scale(0.97);
+      }
+
+      .hint {
+        margin-top: 22px;
+        font-size: 13px;
+        color: var(--text-muted);
+        opacity: 0.75;
+      }
+
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 18px;
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #d9534f;
+        box-shadow: 0 0 0 3px rgba(217, 83, 79, 0.18);
+      }
+
+      .dot.online {
+        background: #4caf7d;
+        box-shadow: 0 0 0 3px rgba(76, 175, 125, 0.18);
+      }
+    </style>
   </head>
-
   <body>
-    <h1>No Internet Connection</h1>
+    <div class="card">
+      <div class="ornament">Asma-ul-Husna</div>
 
-    <p>Please reconnect.</p>
+      <div class="icon-wrap">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M12 20h.01" />
+          <path d="M8.5 16.5a5 5 0 0 1 7 0" />
+          <path d="M5 13a10 10 0 0 1 14 0" />
+          <path d="M2 8.82a15 15 0 0 1 20 0" />
+          <line x1="3" y1="3" x2="21" y2="21" />
+        </svg>
+      </div>
+
+      <h1>No Internet Connection</h1>
+      <p>
+        You're currently offline. Anything you've already studied is still
+        available — reconnect to sync new content.
+      </p>
+
+      <button onclick="location.reload()">Try Again</button>
+
+      <div class="status">
+        <span class="dot" id="statusDot"></span>
+        <span id="statusText">Offline</span>
+      </div>
+
+      <div class="divider"><span>&#9670;</span></div>
+
+      <div class="hint">Islamic — Study the 99 Names of Allah</div>
+    </div>
+
+    <script>
+      function updateStatus() {
+        const dot = document.getElementById("statusDot");
+        const text = document.getElementById("statusText");
+        if (navigator.onLine) {
+          dot.classList.add("online");
+          text.textContent = "Back online — reload to continue";
+        } else {
+          dot.classList.remove("online");
+          text.textContent = "Offline";
+        }
+      }
+
+      window.addEventListener("online", updateStatus);
+      window.addEventListener("offline", updateStatus);
+      updateStatus();
+
+      // Auto-retry when connection returns
+      window.addEventListener("online", () => {
+        setTimeout(() => location.reload(), 800);
+      });
+    </script>
   </body>
 </html>
