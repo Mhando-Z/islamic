@@ -164,7 +164,7 @@ export default function TodayNameItem({ entry, target, lang, t, description }) {
                   onClick={() => {
                     if (confirm(t.today.resetConfirm)) resetCount(entry.number);
                   }}
-                  className="mt-3 text-[11px] text-ink500   rounded-3xl border border-ink500/20 px-3 py-1.5 hover:bg-ink500/5 transition"
+                  className="mt-3 text-[11px] text-ink500 rounded-3xl border border-ink500/20 px-3 py-1.5 hover:bg-ink500/5 transition"
                 >
                   {t.today.reset}
                 </button>
