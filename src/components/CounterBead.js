@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const SIZE = 190;
@@ -10,29 +10,26 @@ const CIRC = 2 * Math.PI * R;
 
 export default function CounterBead({ count, target, onTap, label }) {
   const [pulses, setPulses] = useState([]);
+  const audioCtxRef = useRef(null);
+  const wasDoneRef = useRef(false);
   const pct = target > 0 ? Math.min(count / target, 1) : 0;
   const done = target > 0 && count >= target;
-  const audioCtxRef = useRef(null);
 
-  // const handleTap = useCallback(() => {
-  //   if (done) return;
-  //   const id = Date.now() + Math.random();
-  //   setPulses((p) => [...p, id]);
-  //   setTimeout(() => setPulses((p) => p.filter((x) => x !== id)), 650);
-  //   onTap?.();
-  // }, [onTap, done]);
+  const getAudioCtx = useCallback(() => {
+    if (!audioCtxRef.current) {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      audioCtxRef.current = new AudioCtx();
+    }
+    const ctx = audioCtxRef.current;
+    if (ctx.state === "suspended") {
+      ctx.resume();
+    }
+    return ctx;
+  }, []);
 
   const playClickSound = useCallback(() => {
     try {
-      if (!audioCtxRef.current) {
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        audioCtxRef.current = new AudioCtx();
-      }
-      const ctx = audioCtxRef.current;
-      if (ctx.state === "suspended") {
-        ctx.resume();
-      }
-
+      const ctx = getAudioCtx();
       const now = ctx.currentTime;
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
@@ -52,7 +49,40 @@ export default function CounterBead({ count, target, onTap, label }) {
     } catch (err) {
       // Fail silently if Web Audio API is unavailable
     }
-  }, []);
+  }, [getAudioCtx]);
+
+  const playCompleteSound = useCallback(() => {
+    try {
+      const ctx = getAudioCtx();
+      const now = ctx.currentTime;
+
+      // Two-note ascending chime: gives a distinct "done!" feel
+      const notes = [
+        { freq: 523.25, start: 0, dur: 0.16 }, // C5
+        { freq: 783.99, start: 0.1, dur: 0.28 }, // G5
+      ];
+
+      notes.forEach(({ freq, start, dur }) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, now + start);
+
+        gain.gain.setValueAtTime(0.0001, now + start);
+        gain.gain.exponentialRampToValueAtTime(0.22, now + start + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + start + dur);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now + start);
+        osc.stop(now + start + dur + 0.02);
+      });
+    } catch (err) {
+      // Fail silently if Web Audio API is unavailable
+    }
+  }, [getAudioCtx]);
 
   const handleTap = useCallback(() => {
     if (done) return;
@@ -62,6 +92,13 @@ export default function CounterBead({ count, target, onTap, label }) {
     setTimeout(() => setPulses((p) => p.filter((x) => x !== id)), 650);
     onTap?.();
   }, [onTap, done, playClickSound]);
+
+  useEffect(() => {
+    if (done && !wasDoneRef.current) {
+      playCompleteSound();
+    }
+    wasDoneRef.current = done;
+  }, [done, playCompleteSound]);
 
   return (
     <div className="relative flex flex-col items-center">
