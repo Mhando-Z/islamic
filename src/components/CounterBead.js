@@ -65,13 +65,17 @@ export default function CounterBead({ count, target, onTap, label }) {
           onClick={handleTap}
           whileTap={{ scale: 0.9 }}
           className="absolute inset-[14px] rounded-full flex flex-col items-center justify-center
-                     bg-gradient-to-b from-ink-lighter to-ink-light border border-gold/25 shadow-glow
+                     bg-linear-to-b from-ink-lighter to-ink-light border border-gold/25 shadow-glow
                      disabled:opacity-90"
           disabled={done}
           aria-label={label}
         >
-          <span className="font-mono text-4xl text-parchment tabular-nums">{count}</span>
-          <span className="font-mono text-xs text-parchment-dim/60 mt-0.5">/ {target}</span>
+          <span className="font-mono text-4xl text-parchment tabular-nums">
+            {count}
+          </span>
+          <span className="font-mono text-xs text-parchment-dim/60 mt-0.5">
+            / {target}
+          </span>
         </motion.button>
       </div>
     </div>
