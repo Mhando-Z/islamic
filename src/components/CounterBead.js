@@ -64,7 +64,7 @@ export default function CounterBead({ count, target, onTap, label }) {
         <motion.button
           onClick={handleTap}
           whileTap={{ scale: 0.9 }}
-          className="absolute inset-[14px] rounded-full flex flex-col items-center justify-center
+          className="absolute inset-3.5 rounded-full flex flex-col items-center justify-center
                      bg-linear-to-b from-ink-lighter to-ink-light border border-gold/25 shadow-glow
                      disabled:opacity-90"
           disabled={done}
