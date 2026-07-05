@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const SIZE = 190;
@@ -12,14 +12,56 @@ export default function CounterBead({ count, target, onTap, label }) {
   const [pulses, setPulses] = useState([]);
   const pct = target > 0 ? Math.min(count / target, 1) : 0;
   const done = target > 0 && count >= target;
+  const audioCtxRef = useRef(null);
+
+  // const handleTap = useCallback(() => {
+  //   if (done) return;
+  //   const id = Date.now() + Math.random();
+  //   setPulses((p) => [...p, id]);
+  //   setTimeout(() => setPulses((p) => p.filter((x) => x !== id)), 650);
+  //   onTap?.();
+  // }, [onTap, done]);
+
+  const playClickSound = useCallback(() => {
+    try {
+      if (!audioCtxRef.current) {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        audioCtxRef.current = new AudioCtx();
+      }
+      const ctx = audioCtxRef.current;
+      if (ctx.state === "suspended") {
+        ctx.resume();
+      }
+
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(880, now);
+      osc.frequency.exponentialRampToValueAtTime(440, now + 0.08);
+
+      gain.gain.setValueAtTime(0.18, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.12);
+    } catch (err) {
+      // Fail silently if Web Audio API is unavailable
+    }
+  }, []);
 
   const handleTap = useCallback(() => {
     if (done) return;
+    playClickSound();
     const id = Date.now() + Math.random();
     setPulses((p) => [...p, id]);
     setTimeout(() => setPulses((p) => p.filter((x) => x !== id)), 650);
     onTap?.();
-  }, [onTap, done]);
+  }, [onTap, done, playClickSound]);
 
   return (
     <div className="relative flex flex-col items-center">
