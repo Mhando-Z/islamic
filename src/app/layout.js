@@ -29,7 +29,7 @@ const jbMono = JetBrains_Mono({
 export const metadata = {
   title: "Islamic, Majina 99 ya Mwenyezi Mungu",
   description:
-    "Recite, track, and study the 99 Names of Allah — bilingual English/Swahili.",
+    "A mobile first Next.js web app for reciting, tracking, and studying the 99 Beautiful Names of Allah (Asma-ul-Husna), bilingual in English and Swahili. It works fully offline once loaded",
 };
 
 export const viewport = {
