@@ -1,4 +1,4 @@
-# Husna — 99 Names of Allah tracker
+# 99 Names of Allah tracker
 
 A mobile-first Next.js web app for reciting, tracking, and studying the 99
 Beautiful Names of Allah (Asma-ul-Husna), bilingual in English and Swahili.
